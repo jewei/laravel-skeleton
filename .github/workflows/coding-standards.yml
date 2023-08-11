@@ -3,14 +3,14 @@ name: Format PHP code
 on:
   push:
     paths:
-      - '**.php'
+      - "**.php"
 
 jobs:
   format-code:
     runs-on: ubuntu-latest
 
     permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the 
+      # Give the default GITHUB_TOKEN write permission to commit and push the
       # changed files back to the repository.
       contents: write
 
@@ -26,6 +26,21 @@ jobs:
           php-version: 8.2
           coverage: none
 
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
       - name: Run Pint
         run: ./vendor/bin/pint
 
@@ -33,4 +48,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Fix code formatting
-          file_pattern: '*.php'
+          file_pattern: "*.php"
