@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -29,6 +31,21 @@ uses(
 
 expect()->extend('toBeOne', function () {
     return $this->toBe(1);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Hooks
+|--------------------------------------------------------------------------
+|
+| Hooks allow you to perform specific actions before and after each test or file, such as setting
+| up test data, initializing the test environment, or cleaning up resources after the tests are
+| complete.
+|
+*/
+
+beforeAll(function () {
+    Http::preventStrayRequests();
 });
 
 /*

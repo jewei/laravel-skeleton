@@ -41,4 +41,4 @@ jobs:
           php artisan key:generate
 
       - name: Execute tests
-        run: ./vendor/bin/pest
+        run: php artisan test
