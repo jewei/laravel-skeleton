@@ -29,9 +29,9 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Determine if the exception handler response should be JSON.
+     * Prepare a response for the given exception.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      */
     protected function shouldReturnJson($request, Throwable $e): bool
     {
