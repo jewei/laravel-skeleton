@@ -47,5 +47,5 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Fix code formatting
+          commit_message: Follow style guidelines
           file_pattern: "*.php"
