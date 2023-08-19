@@ -27,17 +27,19 @@ composer create-project jewei/laravel-skeleton
 
 ## What's next?
 
-1. update this file README.md to reflect your new project.
-2. Install a Laravel starter kit of your choice maybe?
+1. Update this file README.md to reflect your new project.
+2. Install a Laravel [starter kit](https://laravel.com/docs/master/starter-kits) of your choice.
+3. Find out more on Laravel's documentation about [next step](https://laravel.com/docs/master#next-steps).
+4. If you're already familiar with Laravel, there's [VILT stack](https://viltstack.dev/) and [TALL stack](https://tallstack.dev/) to build reactive application.
 
-Breeze for simple app.
+Generally, you can start with Breeze for simple app:
 
 ```
 composer require laravel/breeze --dev
 php artisan breeze:install
 ```
 
-Jetstream for full fledge app.
+Or you can choose Jetstream for full fledge app:
 
 ```
 composer require laravel/jetstream
