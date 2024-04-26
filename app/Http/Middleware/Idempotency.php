@@ -102,7 +102,7 @@ class Idempotency
      */
     protected function getCache(): array
     {
-        return Cache::get($this->resolveCacheKey());
+        return (array) Cache::get($this->resolveCacheKey());
     }
 
     /**
