@@ -1,44 +1,44 @@
 <?php
 
-use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
+declare(strict_types=1);
+
+use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
+use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\Config\RectorConfig;
-use Rector\Set\ValueObject\SetList;
+use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
 use RectorLaravel\Set\LaravelSetList;
 
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->paths([
+return RectorConfig::configure()
+    ->withPaths([
         __DIR__.'/app',
         __DIR__.'/bootstrap',
         __DIR__.'/config',
-        __DIR__.'/database',
         __DIR__.'/public',
         __DIR__.'/resources',
         __DIR__.'/routes',
         __DIR__.'/tests',
-    ]);
-
-    $rectorConfig->rules([
-        InlineConstructorDefaultToPropertyRector::class,
-    ]);
-
-    $rectorConfig->skip([
+    ])
+    ->withSkipPath(__DIR__.'/bootstrap/cache')
+    ->withPhpSets()
+    ->withPreparedSets(
+        codeQuality: true,
+        codingStyle: true,
+        typeDeclarations: true,
+        privatization: true,
+        earlyReturn: true,
+    )
+    ->withDeadCodeLevel(42)
+    ->withSkip([
+        StringClassNameToClassConstantRector::class,
         DisallowedEmptyRuleFixerRector::class,
-    ]);
-
-    $rectorConfig->sets([
-        SetList::CODE_QUALITY,
-        SetList::DEAD_CODE,
-        SetList::PHP_70,
-        SetList::PHP_71,
-        SetList::PHP_72,
-        SetList::PHP_73,
-        SetList::PHP_74,
-        SetList::PHP_80,
-        SetList::PHP_81,
-        SetList::PHP_82,
-        SetList::TYPE_DECLARATION,
-        SetList::PRIVATIZATION,
+        StaticArrowFunctionRector::class,
+        StaticClosureRector::class,
+    ])
+    ->withRules([
+        AddVoidReturnTypeWhereNoReturnRector::class,
+    ])
+    ->withSets([
         LaravelSetList::LARAVEL_110,
     ]);
-};

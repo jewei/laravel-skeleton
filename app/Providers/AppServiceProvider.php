@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Log a warning if we spend more than a total of 2000ms querying.
         DB::whenQueryingForLongerThan(2000, function (Connection $connection): void {
-            Log::warning("Database queries exceeded 2 seconds on {$connection->getName()}");
+            Log::warning('Database queries exceeded 2 seconds on '.$connection->getName());
         });
 
         // Log a warning if we spend more than 1000ms on a single query.
