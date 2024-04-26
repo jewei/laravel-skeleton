@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class Idempotency
 {
@@ -50,7 +49,7 @@ class Idempotency
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): SymfonyResponse
+    public function handle(Request $request, Closure $next): Response
     {
         if (! $this->isIdempotentRequest($request) || empty($idempotenceKey = $this->getIdempotencyKey($request))) {
             return $next($request);
@@ -64,9 +63,7 @@ class Idempotency
 
         // If the response is already cached, return it.
         if ($this->hasCache()) {
-            $cache = $this->getCache();
-
-            return response((string) $cache['content'], (int) $cache['status'], (array) $cache['headers'])
+            return response(...$this->getCache())
                 ->header($this->idempotenceKey, $idempotenceKey)
                 ->header($this->statusKey, 'HIT')
                 ->header($this->replayKey, 'true');
@@ -74,9 +71,9 @@ class Idempotency
 
         // Store the response in cache.
         $this->setCache([
-            'content' => $response->getContent(),
-            'status' => $response->getStatusCode(),
-            'headers' => $response->headers->all(),
+            'content' => (string) $response->getContent(),
+            'status' => (int) $response->getStatusCode(),
+            'headers' => (array) $response->headers->all(),
         ]);
 
         $response->headers->set($this->idempotenceKey, $idempotenceKey);
@@ -105,7 +102,7 @@ class Idempotency
      */
     protected function getCache(): array
     {
-        return (array) Cache::get($this->resolveCacheKey());
+        return Cache::get($this->resolveCacheKey());
     }
 
     /**
