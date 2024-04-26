@@ -4,5 +4,7 @@ parameters:
     level: max
     paths:
         - app
+        - bootstrap
+        - database
     checkMissingIterableValueType: false
     treatPhpDocTypesAsCertain: false

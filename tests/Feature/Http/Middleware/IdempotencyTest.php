@@ -4,32 +4,29 @@ use App\Http\Middleware\Idempotency;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
-beforeEach(function () {
+beforeEach(function (): void {
     // Create a dummy response.
     $this->dummyResponse = new Response('dummy response', 200, ['X-Custom-Header' => 'dummy-header']);
 
     // Define the callback that wants to use idempotency.
-    $this->idempotenceCallback = function () {
-        return (new Idempotency())->handle(
-            tap(
-                Request::create('/dummy-test-route', 'POST'),
-                fn (Request $request) => $request->headers->set('X-Idempotency-Key', 'dummy-key')
-            ),
-            fn () => $this->dummyResponse
-        );
-    };
+    $this->idempotenceCallback = fn (): SymfonyResponse => (new Idempotency())->handle(
+        tap(
+            Request::create('/dummy-test-route', 'POST'),
+            fn (Request $request) => $request->headers->set('X-Idempotency-Key', 'dummy-key')
+        ),
+        fn (): Response => $this->dummyResponse
+    );
 
     // Define the callback that does not want to use idempotency.
-    $this->normalCallback = function () {
-        return (new Idempotency())->handle(
-            Request::create('/dummy-test-route', 'GET'),
-            fn () => $this->dummyResponse
-        );
-    };
+    $this->normalCallback = fn (): SymfonyResponse => (new Idempotency())->handle(
+        Request::create('/dummy-test-route', 'GET'),
+        fn (): Response => $this->dummyResponse
+    );
 });
 
-test('idempotency middleware handles idempotent request', function () {
+test('idempotency middleware handles idempotent request', function (): void {
     // Call the handle method of the middleware
     $response = call_user_func($this->idempotenceCallback);
 
@@ -47,7 +44,7 @@ test('idempotency middleware handles idempotent request', function () {
     expect(Cache::has('idempotency_key__dummy-key_127.0.0.1'))->toBeTrue();
 });
 
-test('idempotency middleware handles non-idempotent request', function () {
+test('idempotency middleware handles non-idempotent request', function (): void {
     // Call the handle method of the middleware
     $response = call_user_func($this->normalCallback);
 
@@ -63,7 +60,7 @@ test('idempotency middleware handles non-idempotent request', function () {
     expect(Cache::has('idempotency_key__dummy-key_127.0.0.1'))->toBeFalse();
 });
 
-test('idempotency middleware handles replay request', function () {
+test('idempotency middleware handles replay request', function (): void {
     // Call the handle method of the middleware.
     call_user_func($this->idempotenceCallback);
 
