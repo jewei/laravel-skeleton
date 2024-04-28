@@ -3,7 +3,7 @@
 [![Tests](https://github.com/jewei/laravel-skeleton/actions/workflows/tests.yml/badge.svg)](https://github.com/jewei/laravel-skeleton/actions/workflows/tests.yml)
 [![Static analysis](https://github.com/jewei/laravel-skeleton/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/jewei/laravel-skeleton/actions/workflows/static-analysis.yml)
 
-Start a new project by scaffolding a PHP 8.2, Laravel 10 app. It combines the latest technologies and best practices.
+Start a new project by scaffolding a PHP 8.2, Laravel 11 app. It combines the latest technologies and best practices.
 
 ## Usage
 
@@ -22,7 +22,7 @@ composer create-project jewei/laravel-skeleton
 5. HTTP Client: Prevents stray requests.
 6. Pint: Styling with Laravel preset.
 7. Rector: Laravel upgrade rules set.
-8. Middleware: ResponseWithJson for APIs.
+8. Middlewares: Collection of useful middlewares.
 9. Removed Sail - Docker is complicated.
 
 ## What's next?
