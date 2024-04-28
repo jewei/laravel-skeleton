@@ -26,6 +26,8 @@ class Idempotency
 
     /**
      * The verbs that are considered idempotent.
+     *
+     * @var array<int, string>
      */
     protected array $verbs = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
