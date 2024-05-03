@@ -16,13 +16,24 @@ test('Enums')
     ->expect('App\Enums')
     ->toBeEnums();
 
+test('Exceptions')
+    ->expect('App\Exceptions')
+    ->toExtend('Exception');
+
 test('Controllers')
     ->expect('App\Http\Controllers')
-    ->toHaveSuffix('Controller');
+    ->toHaveSuffix('Controller')
+    ->toExtend('App\Http\Controllers\Controller');
+
+test('Commands')
+    ->expect('App\Console\Commands')
+    ->toExtend('Illuminate\Console\Command')
+    ->toHaveMethod('handle');
 
 test('Jobs')
     ->expect('App\Jobs')
-    ->toImplement('Illuminate\Contracts\Queue\ShouldQueue');
+    ->toImplement('Illuminate\Contracts\Queue\ShouldQueue')
+    ->toHaveMethod('handle');
 
 test('Models')
     ->expect('App\Models')
@@ -36,5 +47,5 @@ test('ValueObjects')
     ->toImplementNothing();
 
 test('Not debugging statements are left in our code.')
-    ->expect(['dd', 'dump', 'var_dump', 'print_f'])
-    ->not->toBeUsed();
+    ->expect(['dd', 'ddd', 'die', 'dump', 'var_dump', 'print_f', 'sleep'])
+    ->toBeUsedInNothing();
