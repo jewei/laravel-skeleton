@@ -13,7 +13,7 @@ beforeEach(function (): void {
     $this->dummyResponse = new Response('dummy response', 200, ['X-Custom-Header' => 'dummy-header']);
 
     // Define the callback that wants to use idempotency.
-    $this->idempotenceCallback = fn (): SymfonyResponse => (new Idempotency())->handle(
+    $this->idempotenceCallback = fn (): SymfonyResponse => (new Idempotency)->handle(
         tap(
             Request::create('/dummy-test-route', 'POST'),
             fn (Request $request) => $request->headers->set('X-Idempotency-Key', 'dummy-key')
@@ -22,7 +22,7 @@ beforeEach(function (): void {
     );
 
     // Define the callback that does not want to use idempotency.
-    $this->normalCallback = fn (): SymfonyResponse => (new Idempotency())->handle(
+    $this->normalCallback = fn (): SymfonyResponse => (new Idempotency)->handle(
         Request::create('/dummy-test-route', 'GET'),
         fn (): Response => $this->dummyResponse
     );
