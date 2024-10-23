@@ -103,14 +103,18 @@ final class Idempotency
 
     /**
      * Get the cache value.
+     *
+     * @return array{content: string, status: int, headers: array<string, list<string|null>>}
      */
     private function getCache(): array
     {
-        return (array) Cache::get($this->resolveCacheKey());
+        return Cache::get($this->resolveCacheKey()); // @phpstan-ignore-line
     }
 
     /**
      * Set the cache value.
+     *
+     * @param  array{content: string, status: int, headers: array<string, list<string|null>>}  $value
      */
     private function setCache(array $value): void
     {
