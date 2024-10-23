@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
-use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
+use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
+use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
 use RectorLaravel\Set\LaravelSetList;
 
@@ -20,24 +21,30 @@ return RectorConfig::configure()
         __DIR__.'/tests',
     ])
     ->withSkipPath(__DIR__.'/bootstrap/cache')
-    ->withPhpSets()
-    ->withPreparedSets(
-        codeQuality: true,
-        codingStyle: true,
-        privatization: true,
-        earlyReturn: true,
+    ->withPhpSets(
+        $php83 = true
     )
-    ->withDeadCodeLevel(42)
-    ->withTypeCoverageLevel(37)
-    // ->withImportNames()
+    ->withPreparedSets(
+        $deadCode = true,
+        $codeQuality = true,
+        $codingStyle = true,
+        $typeDeclarations = true,
+        $privatization = true,
+        $naming = true,
+        $instanceOf = true,
+        $earlyReturn = true,
+        $strictBooleans = true,
+        $carbon = true,
+        $rectorPreset = true,
+    )
     ->withSkip([
-        StringClassNameToClassConstantRector::class,
+        AddOverrideAttributeToOverriddenMethodsRector::class,
         DisallowedEmptyRuleFixerRector::class,
-        StaticArrowFunctionRector::class,
-        StaticClosureRector::class,
+        RenameParamToMatchTypeRector::class,
+        StringClassNameToClassConstantRector::class,
     ])
     ->withRules([
-        //
+        InlineConstructorDefaultToPropertyRector::class,
     ])
     ->withSets([
         LaravelSetList::ARRAY_STR_FUNCTIONS_TO_STATIC_CALL,
