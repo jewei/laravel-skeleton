@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -7,49 +9,49 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 
-class Idempotency
+final class Idempotency
 {
     /**
      * The header key for the idempotency key.
      */
-    protected string $idempotenceKey = 'X-Idempotency-Key';
+    private string $idempotenceKey = 'X-Idempotency-Key';
 
     /**
      * The header key for the idempotency status.
      */
-    protected string $statusKey = 'X-Idempotency-Status';
+    private string $statusKey = 'X-Idempotency-Status';
 
     /**
      * The header key for the replay status.
      */
-    protected string $replayKey = 'X-Idempotency-Is-Replay';
+    private string $replayKey = 'X-Idempotency-Is-Replay';
 
     /**
      * The verbs that are considered idempotent.
      *
      * @var array<int, string>
      */
-    protected array $verbs = ['POST', 'PUT', 'PATCH', 'DELETE'];
+    private array $verbs = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
     /**
      * The cache prefix for the idempotency key.
      */
-    protected string $cachePrefix = 'idempotency_key_';
+    private string $cachePrefix = 'idempotency_key_';
 
     /**
      * The cache duration in minutes.
      */
-    protected int $cacheDuration = 5;
+    private int $cacheDuration = 5;
 
     /**
      * The request instance.
      */
-    protected Request $request;
+    private Request $request;
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -84,7 +86,7 @@ class Idempotency
         return $response;
     }
 
-    protected function resolveCacheKey(): string
+    private function resolveCacheKey(): string
     {
         return sprintf(
             '%s_%s_%s',
@@ -94,7 +96,7 @@ class Idempotency
         );
     }
 
-    protected function hasCache(): bool
+    private function hasCache(): bool
     {
         return Cache::has($this->resolveCacheKey());
     }
@@ -102,7 +104,7 @@ class Idempotency
     /**
      * Get the cache value.
      */
-    protected function getCache(): array
+    private function getCache(): array
     {
         return (array) Cache::get($this->resolveCacheKey());
     }
@@ -110,7 +112,7 @@ class Idempotency
     /**
      * Set the cache value.
      */
-    protected function setCache(array $value): void
+    private function setCache(array $value): void
     {
         Cache::put($this->resolveCacheKey(), $value, now()->addMinutes($this->cacheDuration));
     }
@@ -118,15 +120,15 @@ class Idempotency
     /**
      * Check if the request is idempotent.
      */
-    protected function isIdempotentRequest(Request $request): bool
+    private function isIdempotentRequest(Request $request): bool
     {
-        return in_array($request->method(), $this->verbs);
+        return in_array($request->method(), $this->verbs, true);
     }
 
     /**
      * Get the idempotency key from the request.
      */
-    protected function getIdempotencyKey(Request $request): string
+    private function getIdempotencyKey(Request $request): string
     {
         return $request->header($this->idempotenceKey, '');
     }

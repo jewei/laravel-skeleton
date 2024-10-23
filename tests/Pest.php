@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Http;
 
 /*
@@ -14,8 +16,8 @@ use Illuminate\Support\Facades\Http;
 */
 
 uses(
-    Tests\TestCase::class,
-    Illuminate\Foundation\Testing\LazilyRefreshDatabase::class,
+    \Tests\TestCase::class,
+    \Illuminate\Foundation\Testing\LazilyRefreshDatabase::class,
 )->in('Feature');
 
 /*

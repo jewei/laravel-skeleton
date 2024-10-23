@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 test('Actions')
     ->expect('App\Actions')
     ->toBeInvokable();
@@ -18,7 +20,7 @@ test('Enums')
 
 test('Exceptions')
     ->expect('App\Exceptions')
-    ->toExtend('Exception');
+    ->toExtend(\Exception::class);
 
 test('Controllers')
     ->expect('App\Http\Controllers')
@@ -27,17 +29,17 @@ test('Controllers')
 
 test('Commands')
     ->expect('App\Console\Commands')
-    ->toExtend('Illuminate\Console\Command')
+    ->toExtend(\Illuminate\Console\Command::class)
     ->toHaveMethod('handle');
 
 test('Jobs')
     ->expect('App\Jobs')
-    ->toImplement('Illuminate\Contracts\Queue\ShouldQueue')
+    ->toImplement(\Illuminate\Contracts\Queue\ShouldQueue::class)
     ->toHaveMethod('handle');
 
 test('Models')
     ->expect('App\Models')
-    ->toExtend('Illuminate\Database\Eloquent\Model');
+    ->toExtend(\Illuminate\Database\Eloquent\Model::class);
 
 test('ValueObjects')
     ->expect('App\ValueObjects')
