@@ -16,8 +16,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
-          tools: composer:v2, phpunit
+          php-version: '8.4'
+          tools: phpunit
           coverage: none
 
       - name: Setup Problem Matches
