@@ -24,6 +24,8 @@ composer create-project jewei/laravel-skeleton
 7. Rector: Laravel upgrade rules set.
 8. Middlewares: Collection of useful middlewares.
 9. Removed Sail - Docker is complicated.
+10. Deployment script.
+11. Cursor rules.
 
 ## What's next?
 
@@ -31,17 +33,3 @@ composer create-project jewei/laravel-skeleton
 2. Install a Laravel [starter kit](https://laravel.com/docs/master/starter-kits) of your choice.
 3. Find out more on Laravel's documentation about [next step](https://laravel.com/docs/master#next-steps).
 4. If you're already familiar with Laravel, there's [VILT stack](https://viltstack.dev/) and [TALL stack](https://tallstack.dev/) to build reactive application.
-
-Generally, you can start with Breeze for simple app:
-
-```
-composer require laravel/breeze --dev
-php artisan breeze:install
-```
-
-Or you can choose Jetstream for full fledge app:
-
-```
-composer require laravel/jetstream
-php artisan jetstream:install livewire --dark --teams
-```
