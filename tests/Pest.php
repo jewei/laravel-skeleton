@@ -15,10 +15,9 @@ use Illuminate\Support\Facades\Http;
 |
 */
 
-uses(
-    \Tests\TestCase::class,
-    \Illuminate\Foundation\Testing\LazilyRefreshDatabase::class,
-)->in('Feature');
+pest()->extend(\Tests\TestCase::class)
+    ->use(\Illuminate\Foundation\Testing\LazilyRefreshDatabase::class)
+    ->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
