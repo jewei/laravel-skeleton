@@ -3,24 +3,27 @@
     "name": "jewei/laravel-skeleton",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "skeleton"],
+    "keywords": [
+        "laravel",
+        "skeleton"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^11.31",
-        "laravel/tinker": "^2.9"
+        "laravel/framework": "^12.0",
+        "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.0",
         "fakerphp/faker": "^1.23",
-        "larastan/larastan": "^3.0",
-        "laravel/pail": "^1.2",
-        "laravel/pint": "^1.19",
-        "laravel/sail": "^1.26",
+        "larastan/larastan": "^3.1",
+        "laravel/pail": "^1.2.2",
+        "laravel/pint": "^1.21",
+        "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.5",
+        "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^3.7",
-        "pestphp/pest-plugin-laravel": "^3.0"
+        "pestphp/pest-plugin-laravel": "^3.1"
     },
     "autoload": {
         "psr-4": {
