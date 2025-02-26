@@ -5,22 +5,17 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Override;
+use Illuminate\Validation\Rules\Password;
 
 final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    #[Override]
     public function register(): void
     {
         //
@@ -34,27 +29,18 @@ final class AppServiceProvider extends ServiceProvider
         // Always use immutable dates.
         Date::use(CarbonImmutable::class);
 
+        // Prevent accidental data corruption.
+        DB::prohibitDestructiveCommands($this->app->environment('production'));
+
         // Strict Model.
-        Model::shouldBeStrict(! app()->isProduction());
+        Model::unguard();
+        Model::shouldBeStrict(! $this->app->environment('production'));
 
-        // Log a warning if we spend more than a total of 2000ms querying.
-        DB::whenQueryingForLongerThan(2000, function (Connection $connection): void {
-            Log::warning('Database queries exceeded 2 seconds on '.$connection->getName());
-        });
-
-        // Log a warning if we spend more than 1000ms on a single query.
-        DB::listen(function (QueryExecuted $query): void {
-            if ($query->time > 1000) {
-                Log::warning('An individual database query exceeded 1 second.', [
-                    'sql' => $query->sql,
-                ]);
-            }
-        });
-
-        // Enforce a morph map instead of making it optional.
-        // Relation::enforceMorphMap([
-        //     'user' => \App\User::class,
-        //     'post' => \App\Post::class,
-        // ]);
+        // Loosen password rules in non-production environments.
+        Password::defaults(
+            fn () => $this->app->environment('production')
+                ? Password::min(8)->uncompromised()
+                : null
+        );
     }
 }
