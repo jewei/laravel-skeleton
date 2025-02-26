@@ -20,6 +20,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->string('locale', 5)->default(config('app.locale', 'en'));
+            $table->string('timezone', 32)->default(config('app.timezone', 'UTC'));
+            $table->string('source', 20)->default(config('app.name'));
             $table->timestamps();
         });
 
