@@ -1,0 +1,64 @@
+---
+description: Frontend templates
+globs: *.blade.php
+alwaysApply: false
+---
+# Livewire / Alpine.js
+This project uses Laravel Livewire, latest version (3.6) and sprinkle of Alpine.js.
+
+## Livewire component classes:
+- Keep components small and focused on a single responsibility
+- Follow standard Livewire component structure with properties, lifecycle hooks, and methods grouped logically
+- Use public properties to make data available to the view
+- Never expose sensitive data in public properties, use `#[Locked]`
+- Use primitive types for data passing
+- Use computed properties for DB queries, cache in Redis if needed
+- Implement lifecycle hooks like mount(), hydrate(), updated(), etc. as needed
+- Define methods that can be called from the view using wire:click, wire:submit, etc
+- Keep business logic in the component class, not in the view
+- Use $this->emit() to dispatch events to other components
+- Validate data using the $rules property or validate() method
+- Use $this->reset() to reset component properties
+- Define listeners using the $listeners property to handle events (e.g., protected $listeners = ['eventName' => 'methodName'])
+
+## Livewire Blade views:
+- Avoid putting complex logic in the view; keep it in the component class.=
+- Use appropriate wire: directives.
+    - wire:click
+    - wire:submit
+    - wire:model
+    - wire:loading
+    - wire:navigate
+    - wire:cloak
+    - wire:confirm
+    - wire:transition
+    - wire:init
+    - wire:replace
+    - wire:show
+    - wire:stream
+    - wire:text
+- When using Alpine.js with Livewire, use x-data only when necessary
+- Implement loading states with wire:loading and wire:target when appropriate
+- Include loading states with `delay` modifier
+- Handle loading states with wire:loading, prefer event listeners
+- Use wire:poll with caution and appropriate intervals
+- Follow a logical HTML structure with proper nesting
+- Use $this to access component properties in the view
+- Share data between Livewire and Alpine using entangle() when appropriate
+- Prefer Livewire events over Alpine events for server interaction
+- Use Alpine directives (x-data, x-show, etc.) for client-side interactivity only
+- Keep state management consistent - server state in Livewire, UI state in Alpine
+
+## JavaScript in Livewire:
+- Use Livewire.on('event', callback) to listen for events emitted from components
+- Use Livewire.emit('event', data) to emit events to components
+- Use Livewire.emitTo('component-name', 'event', data) to target a specific component
+- Document all custom events with their payload structure
+- Be mindful of the component's lifecycle and when the DOM is updated
+- You can use Alpine.js for lightweight reactivity, as it's included with Livewire
+- Access Livewire components via window.Livewire.components
+
+## Tailwind
+- Use Tailwind CSS v4
+- Mobile-first responsive utilities
+- Include dark theme styling
