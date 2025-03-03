@@ -1,0 +1,20 @@
+---
+description: Admin panel and user dashboard
+globs: app/Filament/*
+alwaysApply: false
+---
+# Laravel Filament
+This project uses Laravel Filament, latest version (3.3)
+
+# Filament Best Practices
+- Write clean, maintainable Filament code that adheres to best practices
+- Use Filament resources to manage models, following the CRUD pattern
+- Use eager loading for relationships in resource queries
+- Use Filament components and tools for consistency and efficiency
+- Use Filament's form builder for creating and editing records
+- Use Filament's table builder for displaying data with features like sorting and filtering
+- Use Filament's notification system for user feedback
+- Follow Filament's naming conventions for resources, pages, and components
+- Keep business logic in Action classes /app/Actions/
+- Leverage Livewire for interactive elements in the admin panel
+- Optimize performance, especially for large datasets
