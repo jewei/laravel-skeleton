@@ -40,6 +40,20 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('oauth_connections', function (Blueprint $table): void {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('provider');
+            $table->string('provider_id');
+            $table->json('data')->nullable();
+            $table->string('token')->nullable();
+            $table->string('refresh_token')->nullable();
+            $table->timestamp('expires_at')->nullable();
+            $table->timestamps();
+
+            $table->unique(['user_id', 'provider']);
+        });
     }
 
     /**
@@ -50,5 +64,6 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('oauth_connections');
     }
 };

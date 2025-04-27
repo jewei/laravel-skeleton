@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -42,5 +43,20 @@ final class AppServiceProvider extends ServiceProvider
                 ? Password::min(8)->uncompromised()
                 : null
         );
+
+        // Convert array to arrow notation.
+        // Example:
+        // [
+        //     'a' => [
+        //         'b' => 'c',
+        //     ],
+        // ]
+        // to
+        // [
+        //     'a->b' => 'c',
+        // ]
+        Arr::macro('arrow', fn (array $array): array => collect($array)->dot()
+            ->keyBy(fn ($value, $key) => str_replace('.', '->', $key))
+            ->toArray());
     }
 }

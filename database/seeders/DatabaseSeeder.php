@@ -17,9 +17,10 @@ final class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        // Inspired by https://github.com/ghost.
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Ghost',
+            'email' => 'deleted-user@example.com',
         ]);
     }
 }
