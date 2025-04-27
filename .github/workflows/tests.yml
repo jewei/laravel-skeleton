@@ -44,5 +44,8 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
+      - name: Build Assets
+        run: npm run build
+
       - name: Execute tests
         run: php artisan test
