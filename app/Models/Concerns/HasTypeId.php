@@ -14,8 +14,13 @@ trait HasTypeId
         static::creating(function (Model $model): void {
             $model->setAttribute(
                 'typeid',
-                TypeID::generate($model->getKeyName())
+                TypeID::generate($model->getTypeIdPrefix())
             );
         });
+    }
+
+    protected function getTypeIdPrefix(): string
+    {
+        return mb_strtolower(class_basename($this));
     }
 }
