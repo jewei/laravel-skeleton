@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Http;
-
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -44,7 +42,9 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 */
 
 beforeAll(function (): void {
-    Http::preventStrayRequests();
+    \Illuminate\Support\Facades\Http::preventStrayRequests();
+    \Illuminate\Support\Facades\Mail::alwaysTo('test@example.com');
+    \Illuminate\Support\Sleep::fake();
 });
 
 /*

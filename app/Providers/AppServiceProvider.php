@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -27,22 +28,30 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Flag that determines if the application is running in production.
+        $production = $this->app->environment('production');
+
+        // Prevent accidental data corruption.
+        DB::prohibitDestructiveCommands($production);
+
+        // Automatically eager load relationships and unguard models.
+        Model::unguard();
+        Model::shouldBeStrict(! $production);
+        Model::automaticallyEagerLoadRelationships();
+
         // Always use immutable dates.
         Date::use(CarbonImmutable::class);
 
-        // Prevent accidental data corruption.
-        DB::prohibitDestructiveCommands($this->app->environment('production'));
-
-        // Strict Model.
-        Model::unguard();
-        Model::shouldBeStrict(! $this->app->environment('production'));
-
         // Loosen password rules in non-production environments.
         Password::defaults(
-            fn () => $this->app->environment('production')
-                ? Password::min(8)->uncompromised()
+            fn () => $production
+                ? Password::min(8)->max(255)->uncompromised()
                 : null
         );
+
+        // Vite related.
+        Vite::macro('image', fn (string $asset) => Vite::asset("resources/images/{$asset}"));
+        Vite::useAggressivePrefetching();
 
         // Convert array to arrow notation.
         // Example:
@@ -56,7 +65,7 @@ final class AppServiceProvider extends ServiceProvider
         //     'a->b' => 'c',
         // ]
         Arr::macro('arrow', fn (array $array): array => collect($array)->dot()
-            ->keyBy(fn ($value, $key) => str_replace('.', '->', $key))
+            ->keyBy(fn ($value, $key): string => str_replace('.', '->', $key))
             ->toArray());
     }
 }

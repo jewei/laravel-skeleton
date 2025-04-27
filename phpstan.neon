@@ -1,14 +1,9 @@
 includes:
-    - ./vendor/larastan/larastan/extension.neon
-    - ./vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    - vendor/larastan/larastan/extension.neon
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
 parameters:
     level: max
     paths:
         - app
-        - bootstrap
-        - database/factories
-        - routes
     checkOctaneCompatibility: true
-    ignoreErrors:
-        - '#^Class App\\Models\\[a-zA-Z0-9\\_]+ uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-

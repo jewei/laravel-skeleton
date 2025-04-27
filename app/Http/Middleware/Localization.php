@@ -19,13 +19,15 @@ final class Localization
     {
         // if user is logged in, get the locale from the user settings
         if (app('auth')->check()) {
-            app()->setLocale(app('auth')->user()->locale ?? config('app.locale'));
+            $locale = app('auth')->user()->locale ?? config('app.locale');
+            app()->setLocale(type($locale)->asString());
 
             return $next($request);
         }
 
         // if user is not logged in, get the locale from the session
-        app()->setLocale(session()->get('locale', config('app.locale')));
+        $locale = session()->get('locale', config('app.locale'));
+        app()->setLocale(type($locale)->asString());
 
         return $next($request);
     }

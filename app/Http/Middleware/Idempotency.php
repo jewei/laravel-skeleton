@@ -55,7 +55,7 @@ final class Idempotency
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $this->isIdempotentRequest($request) || empty($idempotenceKey = $this->getIdempotencyKey($request))) {
+        if (! $this->isIdempotentRequest($request) || ! filled($idempotenceKey = $this->getIdempotencyKey($request))) {
             return $next($request);
         }
 

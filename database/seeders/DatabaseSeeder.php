@@ -15,12 +15,27 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory()->firstOrCreate([
+            'id' => 1,
+        ], [
+            'name' => 'System',
+            'email' => 'system@example.com',
+            'password' => '', // root user can't login
+            'locale' => 'en',
+            'timezone' => 'UTC',
+            'source' => 'Seeder',
+        ]);
 
         // Inspired by https://github.com/ghost.
-        User::factory()->create([
+        User::factory()->firstOrCreate([
+            'id' => 0,
+        ], [
             'name' => 'Ghost',
             'email' => 'deleted-user@example.com',
+            'password' => '', // ghost user can't login
+            'locale' => 'en',
+            'timezone' => 'UTC',
+            'source' => 'Seeder',
         ]);
     }
 }

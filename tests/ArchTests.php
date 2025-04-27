@@ -2,6 +2,16 @@
 
 declare(strict_types=1);
 
+arch()
+    ->expect('App')
+    ->toUseStrictTypes()
+    ->toUseStrictEquality()
+    ->not->toUse(['die', 'dd', 'dump', 'var_dump', 'exit', 'sleep', 'usleep']);
+
+arch()->preset()->php();
+arch()->preset()->laravel();
+arch()->preset()->security();
+
 test('Actions')
     ->expect('App\Actions')
     ->toBeInvokable();
@@ -25,7 +35,7 @@ test('Exceptions')
 test('Controllers')
     ->expect('App\Http\Controllers')
     ->toHaveSuffix('Controller')
-    ->toExtend('App\Http\Controllers\Controller');
+    ->toExtend(\App\Http\Controllers\Controller::class);
 
 test('Commands')
     ->expect('App\Console\Commands')
@@ -37,17 +47,9 @@ test('Jobs')
     ->toImplement(\Illuminate\Contracts\Queue\ShouldQueue::class)
     ->toHaveMethod('handle');
 
-test('Models')
-    ->expect('App\Models')
-    ->toExtend(\Illuminate\Database\Eloquent\Model::class);
-
 test('ValueObjects')
     ->expect('App\ValueObjects')
     ->toBeReadonly()
     ->toUseNothing()
     ->toExtendNothing()
     ->toImplementNothing();
-
-test('Not debugging statements are left in our code.')
-    ->expect(['dd', 'ddd', 'die', 'dump', 'var_dump', 'print_f', 'sleep'])
-    ->toBeUsedInNothing();
